@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mavenuiapp
+spec:
+  replicas: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: mavenuiapp
+  template:
+    metadata:
+      name: mavenuiapp
+      labels:
+        app: mavenuiapp
+    spec:
+      containers:
+        - name: mavenuiappcontainer
+          image: rajeshvalusa/kubejenkins
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mavenuiapp
+  labels:
+    app: mavenuiapp
+spec:
+  selector:
+    app: mavenuiapp
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
